@@ -23,7 +23,6 @@
   </div>
 
   <div class="right-column">
-    <!-- Background Carousel behind everything -->
     <div class="background-carousel">
       <div class="carousel">
         <div class="carousel-track" id="backgroundTrack">
@@ -45,7 +44,6 @@
 
     <img src="images/trainbackground.png" class="background-image" alt="Background">
 
-    <!-- Foreground Carousel -->
     <div class="carousel foreground-carousel">
       <div class="carousel-track" id="foregroundTrack">
         <div class="carousel-slide">
@@ -72,7 +70,7 @@
 </div>
 
 <script>
-   const track = document.getElementById('foregroundTrack');
+  const track = document.getElementById('foregroundTrack');
   const bgTrack = document.getElementById('backgroundTrack');
   let slides = Array.from(track.children);
   let bgSlides = Array.from(bgTrack.children);
@@ -137,6 +135,7 @@
     moveToSlide(index - 1);
   }
 
+  // Handle mouse wheel (desktop)
   document.querySelector('.foreground-carousel').addEventListener('wheel', (e) => {
     if (isThrottled) return;
     isThrottled = true;
@@ -146,6 +145,28 @@
       nextSlide();
     } else {
       prevSlide();
+    }
+  });
+
+  // === ADD TOUCH SUPPORT (Mobile Swiping) ===
+  let startX = 0;
+  let endX = 0;
+  const carousel = document.querySelector('.foreground-carousel');
+
+  carousel.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  carousel.addEventListener('touchmove', (e) => {
+    endX = e.touches[0].clientX;
+  });
+
+  carousel.addEventListener('touchend', () => {
+    const threshold = 50; // Minimum swipe distance to trigger
+    if (startX - endX > threshold) {
+      nextSlide(); // Swipe left
+    } else if (endX - startX > threshold) {
+      prevSlide(); // Swipe right
     }
   });
 </script>
