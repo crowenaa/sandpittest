@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Infinite Loop Carousel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="left-column">
+    <div class="title">Meet the Team</div>
+    <div class="carousel-caption">
+      <div class="loading" id="loading">
+        <div class="dot-wave">
+          <div class="dot-wave__dot"></div>
+          <div class="dot-wave__dot"></div>
+          <div class="dot-wave__dot"></div>
+          <div class="dot-wave__dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-column">
+    <!-- Background Carousel behind everything -->
+    <div class="background-carousel">
+      <div class="carousel">
+        <div class="carousel-track" id="backgroundTrack">
+          <div class="carousel-slide">
+            <img src="images/citybackground.png" class="carousel-image" alt="1">
+          </div>
+          <div class="carousel-slide">
+            <img src="images/citybackground.png" class="carousel-image" alt="2">
+          </div>
+          <div class="carousel-slide">
+            <img src="images/citybackground.png" class="carousel-image" alt="3">
+          </div>
+          <div class="carousel-slide">
+            <img src="images/citybackground.png" class="carousel-image" alt="4">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <img src="images/trainbackground.png" class="background-image" alt="Background">
+
+    <!-- Foreground Carousel -->
+    <div class="carousel foreground-carousel">
+      <div class="carousel-track" id="foregroundTrack">
+        <div class="carousel-slide">
+          <img src="images/personone.png" class="carousel-image" alt="1">
+        </div>
+        <div class="carousel-slide">
+          <img src="images/persontwo.png" class="carousel-image" alt="2">
+        </div>
+        <div class="carousel-slide">
+          <img src="images/personthree.png" class="carousel-image" alt="3">
+        </div>
+        <div class="carousel-slide">
+          <img src="images/personfour.png" class="carousel-image" alt="4">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="scroll-btn">
+  <div class="btn">
+    <div class="scroll"> </div>
+  </div>
+</div>
+
+<script>
+   const track = document.getElementById('foregroundTrack');
+  const bgTrack = document.getElementById('backgroundTrack');
+  let slides = Array.from(track.children);
+  let bgSlides = Array.from(bgTrack.children);
+  let index = 0;
+  const totalSlides = slides.length;
+  let isThrottled = false;
+  let storedCaptions = [];
+  const loadingEl = document.getElementById('loading');
+  const captionEl = document.querySelector('.carousel-caption');
+
+  async function fetchCaptions(targetSlides) {
+    loadingEl.style.display = 'block';
+    try {
+      const res = await fetch('https://randomuser.me/api/?results=' + targetSlides.length + '&inc=name,email,login');
+      const data = await res.json();
+      storedCaptions = data.results.map(user => {
+        const department = user.login.username.substring(0, 3).toUpperCase();
+        const jobDescription = `Works in ${department} department as a coordinator.`;
+        return `\n ${user.name.first} ${user.name.last}\n ${user.email}\nDepartment: ${department}\nJob: ${jobDescription}`;
+      });
+      captionEl.textContent = storedCaptions[0];
+    } catch (error) {
+      console.error('Failed to fetch captions:', error);
+    } finally {
+      loadingEl.style.display = 'none';
+    }
+  }
+
+  fetchCaptions(slides);
+
+  function moveToSlide(newIndex) {
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    track.style.transition = 'transform 0.5s ease-in-out';
+    bgTrack.style.transition = 'transform 0.5s ease-in-out';
+    track.style.transform = `translateX(-${slideWidth * newIndex}px)`;
+    bgTrack.style.transform = `translateX(-${slideWidth * newIndex}px)`;
+    index = newIndex;
+    captionEl.textContent = storedCaptions[index % totalSlides];
+
+    if (index >= slides.length - totalSlides) {
+      const newSlides = [];
+      const newBgSlides = [];
+      for (let i = 0; i < totalSlides; i++) {
+        const clone = slides[i].cloneNode(true);
+        const bgClone = bgSlides[i].cloneNode(true);
+        track.appendChild(clone);
+        bgTrack.appendChild(bgClone);
+        newSlides.push(clone);
+        newBgSlides.push(bgClone);
+      }
+      slides = Array.from(track.children);
+      bgSlides = Array.from(bgTrack.children);
+    }
+  }
+
+  function nextSlide() {
+    moveToSlide(index + 1);
+  }
+
+  function prevSlide() {
+    if (index <= 0) return;
+    moveToSlide(index - 1);
+  }
+
+  document.querySelector('.foreground-carousel').addEventListener('wheel', (e) => {
+    if (isThrottled) return;
+    isThrottled = true;
+    setTimeout(() => isThrottled = false, 400);
+
+    if (e.deltaY > 0) {
+      nextSlide();
+    } else {
+      prevSlide();
+    }
+  });
+</script>
+</body>
+</html>

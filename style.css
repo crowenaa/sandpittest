@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: #395147;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100vw;
+    max-width: none;
+    padding: 50px;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .left-column {
+    flex: 1;
+    color: white;
+    padding-right: 20px;
+    z-index: 1;
+    min-width: 300px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .right-column {
+    flex: 2;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-width: 300px;
+  }
+
+  .right-column .background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .right-column .background-carousel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: -1;
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .loading,
+  .carousel-caption {
+    font-size: 1rem;
+    color: #fff;
+    line-height: 1.4;
+    white-space: pre-line;
+    padding-left: 5px;
+  }
+
+  .dot-wave {
+    --uib-size: 50px;
+    --uib-speed: 0.6s;
+    --uib-color: #ffffff;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    width: var(--uib-size);
+    height: calc(var(--uib-size) * 0.17);
+    padding-top: calc(var(--uib-size) * 0.34);
+  }
+
+  .dot-wave__dot {
+    flex-shrink: 0;
+    width: calc(var(--uib-size) * 0.17);
+    height: calc(var(--uib-size) * 0.17);
+    border-radius: 50%;
+    background-color: var(--uib-color);
+    will-change: transform;
+  }
+
+  .dot-wave__dot:nth-child(1) {
+    animation: jump824 var(--uib-speed) ease-in-out calc(var(--uib-speed) * -0.45) infinite;
+  }
+
+  .dot-wave__dot:nth-child(2) {
+    animation: jump824 var(--uib-speed) ease-in-out calc(var(--uib-speed) * -0.3) infinite;
+  }
+
+  .dot-wave__dot:nth-child(3) {
+    animation: jump824 var(--uib-speed) ease-in-out calc(var(--uib-speed) * -0.15) infinite;
+  }
+
+  .dot-wave__dot:nth-child(4) {
+    animation: jump824 var(--uib-speed) ease-in-out infinite;
+  }
+
+  @keyframes jump824 {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-200%);
+    }
+  }
+
+  .carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    z-index: 1;
+    background: transparent;
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .carousel-slide {
+    min-width: 100%;
+    text-align: center;
+    color: white;
+  }
+
+  .carousel-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column-reverse;
+    }
+
+    .left-column, .right-column {
+      padding: 10px 0;
+      min-width: 100%;
+    }
+  }
+
+    .scroll-btn {
+      position: absolute;
+      bottom: 60px;
+      right: 30px;
+      z-index: 10;
+    }
+
+    .btn {
+      width: 30px;
+      height: 50px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      border: none;
+      outline: 2px solid white;
+      position: relative;
+    }
+
+    .scroll {
+      width: 5px;
+      height: 10px;
+      border-radius: 10px;
+      background-color: white;
+      animation: scroll_4013 2s linear infinite;
+      transform: translateY(40%);
+    }
+
+    .btn:after {
+      content: 'scroll';
+      position: absolute;
+      top: 140%;
+      color: whitesmoke;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    @keyframes scroll_4013 {
+      0% {
+        transform: translateY(40%);
+      }
+      50% {
+        transform: translateY(90%);
+      }
+      100% {
+        transform: translateY(40%);
+      }
+    }
+
+  .title {
+    font-family: "Climate Crisis", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+      "YEAR" 1979;
+    text-transform: uppercase;
+    font-size: 350%;
+  }
